@@ -1,0 +1,780 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const ELearningApp());
+}
+
+class ELearningApp extends StatelessWidget {
+  const ELearningApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'E-Learning Platform',
+      theme: ThemeData(
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFFF7F8FC),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF5B5FEF),
+        ),
+      ),
+      home: const HomePage(),
+    );
+  }
+}
+
+// --------------------------------------------------
+// HOME PAGE
+// --------------------------------------------------
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int selectedIndex = 0;
+
+  final List<Map<String, dynamic>> courses = [
+    {
+      'title': 'UI/UX Design',
+      'category': 'Design',
+      'lessons': '24 Lessons',
+      'rating': '4.8',
+      'students': '1.2K',
+      'color': const Color(0xFFE7E9FF),
+      'icon': Icons.design_services,
+    },
+    {
+      'title': 'Flutter Development',
+      'category': 'Programming',
+      'lessons': '32 Lessons',
+      'rating': '4.9',
+      'students': '2.4K',
+      'color': const Color(0xFFE0F2FF),
+      'icon': Icons.phone_android,
+    },
+    {
+      'title': 'Python Programming',
+      'category': 'Programming',
+      'lessons': '28 Lessons',
+      'rating': '4.7',
+      'students': '3.1K',
+      'color': const Color(0xFFE5F8ED),
+      'icon': Icons.code,
+    },
+    {
+      'title': 'Data Science',
+      'category': 'Technology',
+      'lessons': '30 Lessons',
+      'rating': '4.8',
+      'students': '1.8K',
+      'color': const Color(0xFFFFE9D8),
+      'icon': Icons.analytics,
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: selectedIndex == 0
+            ? buildHome()
+            : selectedIndex == 1
+                ? buildMyCourses()
+                : buildProfile(),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        selectedItemColor: const Color(0xFF5B5FEF),
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_outlined),
+            activeIcon: Icon(Icons.menu_book),
+            label: 'My Courses',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --------------------------------------------------
+  // HOME
+  // --------------------------------------------------
+
+  Widget buildHome() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 25),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildHeader(),
+          const SizedBox(height: 25),
+          buildWelcomeCard(),
+          const SizedBox(height: 28),
+          buildSearchBar(),
+          const SizedBox(height: 28),
+          buildSectionTitle('Categories'),
+          const SizedBox(height: 15),
+          buildCategories(),
+          const SizedBox(height: 28),
+          buildSectionTitle('Popular Courses'),
+          const SizedBox(height: 15),
+          buildCourseList(),
+        ],
+      ),
+    );
+  }
+
+  // --------------------------------------------------
+  // HEADER
+  // --------------------------------------------------
+
+  Widget buildHeader() {
+    return Row(
+      children: [
+        Container(
+          height: 48,
+          width: 48,
+          decoration: BoxDecoration(
+            color: const Color(0xFF5B5FEF),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: const Icon(
+            Icons.school,
+            color: Colors.white,
+            size: 27,
+          ),
+        ),
+        const SizedBox(width: 12),
+        const Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Learnify',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'Learn. Grow. Succeed.',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: const Icon(Icons.notifications_none),
+        ),
+      ],
+    );
+  }
+
+  // --------------------------------------------------
+  // WELCOME CARD
+  // --------------------------------------------------
+
+  Widget buildWelcomeCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF5B5FEF),
+            Color(0xFF777AF5),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Hello, Keerthana 👋',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Ready to continue learning?',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFF5B5FEF),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text('Start Learning'),
+                ),
+              ],
+            ),
+          ),
+          const Icon(
+            Icons.menu_book_rounded,
+            size: 80,
+            color: Colors.white24,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --------------------------------------------------
+  // SEARCH
+  // --------------------------------------------------
+
+  Widget buildSearchBar() {
+    return TextField(
+      decoration: InputDecoration(
+        hintText: 'Search courses...',
+        prefixIcon: const Icon(Icons.search),
+        suffixIcon: const Icon(Icons.tune),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  // --------------------------------------------------
+  // SECTION TITLE
+  // --------------------------------------------------
+
+  Widget buildSectionTitle(String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 19,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Text(
+          'See All',
+          style: TextStyle(
+            color: Color(0xFF5B5FEF),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // --------------------------------------------------
+  // CATEGORIES
+  // --------------------------------------------------
+
+  Widget buildCategories() {
+    final categories = [
+      ['Programming', Icons.code],
+      ['Design', Icons.palette_outlined],
+      ['Business', Icons.business_center_outlined],
+      ['Data Science', Icons.bar_chart],
+    ];
+
+    return SizedBox(
+      height: 105,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          return Container(
+            width: 110,
+            margin: const EdgeInsets.only(right: 12),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  categories[index][1] as IconData,
+                  color: const Color(0xFF5B5FEF),
+                  size: 30,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  categories[index][0] as String,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // --------------------------------------------------
+  // COURSE LIST
+  // --------------------------------------------------
+
+  Widget buildCourseList() {
+    return Column(
+      children: courses.map((course) {
+        return buildCourseCard(course);
+      }).toList(),
+    );
+  }
+
+  // --------------------------------------------------
+  // COURSE CARD
+  // --------------------------------------------------
+
+  Widget buildCourseCard(Map<String, dynamic> course) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CourseDetailsPage(course: course),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.all(13),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          children: [
+            Container(
+              height: 82,
+              width: 82,
+              decoration: BoxDecoration(
+                color: course['color'],
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                course['icon'],
+                size: 38,
+                color: const Color(0xFF5B5FEF),
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    course['category'],
+                    style: const TextStyle(
+                      color: Color(0xFF5B5FEF),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    course['title'],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.star,
+                        size: 16,
+                        color: Colors.orange,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(course['rating']),
+                      const SizedBox(width: 10),
+                      Text(
+                        course['lessons'],
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 15,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // --------------------------------------------------
+  // MY COURSES
+  // --------------------------------------------------
+
+  Widget buildMyCourses() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'My Courses',
+            style: TextStyle(
+              fontSize: 27,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Continue your learning journey',
+            style: TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 25),
+          buildProgressCard(
+            'Flutter Development',
+            '68%',
+            0.68,
+            Icons.phone_android,
+          ),
+          buildProgressCard(
+            'Python Programming',
+            '42%',
+            0.42,
+            Icons.code,
+          ),
+          buildProgressCard(
+            'UI/UX Design',
+            '85%',
+            0.85,
+            Icons.design_services,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildProgressCard(
+    String title,
+    String percentage,
+    double progress,
+    IconData icon,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(13),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE9EAFF),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  icon,
+                  color: const Color(0xFF5B5FEF),
+                ),
+              ),
+              const SizedBox(width: 13),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                percentage,
+                style: const TextStyle(
+                  color: Color(0xFF5B5FEF),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          LinearProgressIndicator(
+            value: progress,
+            minHeight: 7,
+            borderRadius: BorderRadius.circular(10),
+            backgroundColor: Colors.grey.shade200,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --------------------------------------------------
+  // PROFILE
+  // --------------------------------------------------
+
+  Widget buildProfile() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          const CircleAvatar(
+            radius: 50,
+            backgroundColor: Color(0xFFE5E6FF),
+            child: Icon(
+              Icons.person,
+              size: 55,
+              color: Color(0xFF5B5FEF),
+            ),
+          ),
+          const SizedBox(height: 15),
+          const Text(
+            'Keerthana',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Text(
+            'Student',
+            style: TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 30),
+          buildProfileOption(Icons.person_outline, 'Edit Profile'),
+          buildProfileOption(Icons.notifications_none, 'Notifications'),
+          buildProfileOption(Icons.settings_outlined, 'Settings'),
+          buildProfileOption(Icons.help_outline, 'Help & Support'),
+        ],
+      ),
+    );
+  }
+
+  Widget buildProfileOption(IconData icon, String title) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: const Color(0xFF5B5FEF),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 15,
+        ),
+      ),
+    );
+  }
+}
+
+// --------------------------------------------------
+// COURSE DETAILS PAGE
+// --------------------------------------------------
+
+class CourseDetailsPage extends StatelessWidget {
+  final Map<String, dynamic> course;
+
+  const CourseDetailsPage({
+    super.key,
+    required this.course,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF7F8FC),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text('Course Details'),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 190,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: course['color'],
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Icon(
+                course['icon'],
+                size: 90,
+                color: const Color(0xFF5B5FEF),
+              ),
+            ),
+            const SizedBox(height: 25),
+            Text(
+              course['category'],
+              style: const TextStyle(
+                color: Color(0xFF5B5FEF),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              course['title'],
+              style: const TextStyle(
+                fontSize: 27,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 15),
+            Row(
+              children: [
+                const Icon(
+                  Icons.star,
+                  color: Colors.orange,
+                  size: 20,
+                ),
+                const SizedBox(width: 5),
+                Text(course['rating']),
+                const SizedBox(width: 18),
+                const Icon(
+                  Icons.people_outline,
+                  size: 20,
+                  color: Colors.grey,
+                ),
+                const SizedBox(width: 5),
+                Text('${course['students']} students'),
+              ],
+            ),
+            const SizedBox(height: 25),
+            const Text(
+              'About this course',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Learn practical skills through structured lessons, '
+              'examples and exercises. This course is designed for '
+              'students and beginners who want to improve their skills.',
+              style: TextStyle(
+                color: Colors.grey,
+                height: 1.6,
+              ),
+            ),
+            const SizedBox(height: 25),
+            Row(
+              children: [
+                const Icon(
+                  Icons.menu_book_outlined,
+                  color: Color(0xFF5B5FEF),
+                ),
+                const SizedBox(width: 10),
+                Text(course['lessons']),
+              ],
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Successfully enrolled in the course!',
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF5B5FEF),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                child: const Text(
+                  'Enroll Now',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
